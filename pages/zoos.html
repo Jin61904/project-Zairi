@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Zoos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Gestión de Zoos</h1>
+        <p class="lead text-center">Administra la información de los zoos registrados en el sistema.</p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Añadir Zoo</h3>
+                <form id="zooForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del Zoo</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ciudad" class="form-label">Ciudad</label>
+                        <input type="text" class="form-control" id="ciudad" name="ciudad" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pais" class="form-label">País</label>
+                        <input type="text" class="form-control" id="pais" name="pais" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tamano" class="form-label">Tamaño (m²)</label>
+                        <input type="number" class="form-control" id="tamano" name="tamano" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="presupuesto" class="form-label">Presupuesto anual</label>
+                        <input type="number" class="form-control" id="presupuesto" name="presupuesto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imagen" class="form-label">Imagen del Zoo</label>
+                        <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Añadir zoo</button>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <h3>Zoos Registrados</h3>
+                <ul class="list-group" id="zoo-list">
+                    <!-- Los zoos se mostrarán aquí -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sección para visualizar zoos registrados en forma de tabla -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2>Listado de Zoos</h2>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Ciudad</th>
+                            <th>País</th>
+                            <th>Tamaño (m²)</th>
+                            <th>Presupuesto Anual</th>
+                            <th>Imagen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="zoo-list-table">
+                        <!-- Los zoos se mostrarán aquí en la tabla -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script para manejar el formulario -->
+    <script>
+        document.getElementById('zooForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita que la página se recargue
+            
+            // Obtener los valores del formulario
+            const nombre = document.getElementById('nombre').value;
+            const ciudad = document.getElementById('ciudad').value;
+            const pais = document.getElementById('pais').value;
+            const tamano = document.getElementById('tamano').value;
+            const presupuesto = document.getElementById('presupuesto').value;
+            const imagen = document.getElementById('imagen').files[0];
+
+            // Crear una URL para la imagen si existe
+            const imagenUrl = imagen ? URL.createObjectURL(imagen) : '';
+
+            // Agregar a la lista de zoos
+            const zooList = document.getElementById('zoo-list');
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerHTML = `
+                ${nombre} - ${ciudad}, ${pais}
+                <img src="${imagenUrl}" alt="${nombre}" class="img-thumbnail" style="width: 100px; float: right; margin-left: 10px;">
+            `;
+            zooList.appendChild(listItem);
+
+            // Agregar a la tabla
+            const zooTable = document.getElementById('zoo-list-table');
+            const tableRow = document.createElement('tr');
+            tableRow.innerHTML = `
+                <td>${nombre}</td>
+                <td>${ciudad}</td>
+                <td>${pais}</td>
+                <td>${tamano}</td>
+                <td>${presupuesto}</td>
+                <td><img src="${imagenUrl}" alt="${nombre}" class="img-thumbnail" style="width: 100px;"></td>
+            `;
+            zooTable.appendChild(tableRow);
+
+            // Limpiar el formulario
+            document.getElementById('zooForm').reset();
+        });
+    </script>
+</body>
+</html>
